@@ -1,3 +1,5 @@
+![alt text](https://github.com/moeabdol/corona-diff/blob/master/wuhan.jpg)
+
 # Corona Virus Strain Diff
 This app shows a plot of mutation between to COVID-19 strains.
 
