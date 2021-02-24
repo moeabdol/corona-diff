@@ -1,3 +1,5 @@
+// comment by Layan
+// yet another code comment
 from Bio import SeqIO
 from io import StringIO
 import numpy as np
