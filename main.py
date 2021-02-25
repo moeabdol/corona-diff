@@ -49,243 +49,52 @@ def numpfy(gene):
 
 if __name__ == "__main__":
     wuhan = read_covid_dna_fasta_file("data/wuhan_jan2020.fasta")
-    usa = read_covid_dna_fasta_file("data/usa_apr2020.fasta")
+    saudi = read_covid_dna_fasta_file("data/saudi_feb2020.fasta")
 
     add_n(wuhan)
-    add_n(usa)
+    add_n(saudi)
 
-    # Gene ORF1ab
-    wuhan_orf1ab = wuhan["ORF1ab"][0].transcribe()
-    wuhan_orf1ab = numpfy(wuhan_orf1ab)
-    wuhan_orf1ab = wuhan_orf1ab.reshape(wuhan["ORF1ab"][1])
-    usa_orf1ab = usa["ORF1ab"][0].transcribe()
-    usa_orf1ab = numpfy(usa_orf1ab)
-    usa_orf1ab = usa_orf1ab.reshape(usa["ORF1ab"][1])
-    mut_orf1ab = wuhan_orf1ab - usa_orf1ab
+    dna = { 'gene=ORF1ab':[(115,115),7],
+            'gene=S':[(62,62),22],
+            'gene=ORF3a':[(28,30),12],
+            'gene=E':[(15,16),12],
+            'gene=M':[(26,27),33],
+            'gene=ORF6':[(14,14),10],
+            'gene=ORF7a':[(19,20),14],
+            'gene=ORF7b':[(12,12),12],
+            'gene=ORF8':[(19,20),14],
+            'gene=N':[(36,36),36],
+            'gene=ORF10':[(11,11),4]}
 
-    # Gene S
-    wuhan_s = wuhan["S"][0].transcribe()
-    wuhan_s = numpfy(wuhan_s)
-    wuhan_s = wuhan_s.reshape(wuhan["S"][1])
-    usa_s = usa["S"][0].transcribe()
-    usa_s = numpfy(usa_s)
-    usa_s = usa_s.reshape(usa["S"][1])
-    mut_s = wuhan_s - usa_s
+    gene_name = list(dna.keys())
+    f, ax = plt.subplots(11, 3, figsize=(25, 30))
+    row = 0
+    col = 0
+    mut_dict={}
+    for i in gene_name:
+        G = i[5:]
+        wuhan_gene = wuhan[G][0].transcribe()
+        wuhan_gene = numpfy(wuhan_gene)
+        wuhan_gene = wuhan_gene.reshape(wuhan[G][1])
+        saudi_gene = saudi[G][0].transcribe()
+        saudi_gene = numpfy(saudi_gene)
+        saudi_gene = saudi_gene.reshape(saudi[G][1])
+        mut = wuhan_gene - saudi_gene
 
-    # Gene ORF3a
-    wuhan_orf3a = wuhan["ORF3a"][0].transcribe()
-    wuhan_orf3a = numpfy(wuhan_orf3a)
-    wuhan_orf3a = wuhan_orf3a.reshape(wuhan["ORF3a"][1])
-    usa_orf3a = usa["ORF3a"][0].transcribe()
-    usa_orf3a = numpfy(usa_orf3a)
-    usa_orf3a = usa_orf3a.reshape(usa["ORF3a"][1])
-    mut_orf3a = wuhan_orf3a - usa_orf3a
+        # sub-plot the numpy array with matplotlib pcolor method.
+        ax[row][col].pcolor(wuhan_gene)
+        ax[row][col].set_title(G+' Gene - Wuhan')
+        col+=1
 
-    # Gene E
-    wuhan_e = wuhan["E"][0].transcribe()
-    wuhan_e = numpfy(wuhan_e)
-    wuhan_e = wuhan_e.reshape(wuhan["E"][1])
-    usa_e = usa["E"][0].transcribe()
-    usa_e = numpfy(usa_e)
-    usa_e = usa_e.reshape(usa["E"][1])
-    mut_e = wuhan_e - usa_e
+        ax[row][col].pcolor(saudi_gene)
+        ax[row][col].set_title(G+' Gene - Saudi')
+        col+=1
 
-    # Gene M
-    wuhan_m = wuhan["M"][0].transcribe()
-    wuhan_m = numpfy(wuhan_m)
-    wuhan_m = wuhan_m.reshape(wuhan["M"][1])
-    usa_m = usa["M"][0].transcribe()
-    usa_m = numpfy(usa_m)
-    usa_m = usa_m.reshape(usa["M"][1])
-    mut_m = wuhan_m - usa_m
-
-    # Gene ORF6
-    wuhan_orf6 = wuhan["ORF6"][0].transcribe()
-    wuhan_orf6 = numpfy(wuhan_orf6)
-    wuhan_orf6 = wuhan_orf6.reshape(wuhan["ORF6"][1])
-    usa_orf6 = usa["ORF6"][0].transcribe()
-    usa_orf6 = numpfy(usa_orf6)
-    usa_orf6 = usa_orf6.reshape(usa["ORF6"][1])
-    mut_orf6 = wuhan_orf6 - usa_orf6
-
-    # Gene ORF7a
-    wuhan_orf7a = wuhan["ORF7a"][0].transcribe()
-    wuhan_orf7a = numpfy(wuhan_orf7a)
-    wuhan_orf7a = wuhan_orf7a.reshape(wuhan["ORF7a"][1])
-    usa_orf7a = usa["ORF7a"][0].transcribe()
-    usa_orf7a = numpfy(usa_orf7a)
-    usa_orf7a = usa_orf7a.reshape(usa["ORF7a"][1])
-    mut_orf7a = wuhan_orf7a - usa_orf7a
-
-    # Gene ORF7b
-    wuhan_orf7b = wuhan["ORF7b"][0].transcribe()
-    wuhan_orf7b = numpfy(wuhan_orf7b)
-    wuhan_orf7b = wuhan_orf7b.reshape(wuhan["ORF7b"][1])
-    usa_orf7b = usa["ORF7b"][0].transcribe()
-    usa_orf7b = numpfy(usa_orf7b)
-    usa_orf7b = usa_orf7b.reshape(usa["ORF7b"][1])
-    mut_orf7b = wuhan_orf7b - usa_orf7b
-
-    # Gene ORF8
-    wuhan_orf8 = wuhan["ORF8"][0].transcribe()
-    wuhan_orf8 = numpfy(wuhan_orf8)
-    wuhan_orf8 = wuhan_orf8.reshape(wuhan["ORF8"][1])
-    usa_orf8 = usa["ORF8"][0].transcribe()
-    usa_orf8 = numpfy(usa_orf8)
-    usa_orf8 = usa_orf8.reshape(usa["ORF8"][1])
-    mut_orf8 = wuhan_orf8 - usa_orf8
-
-    # Gene N
-    wuhan_n = wuhan["N"][0].transcribe()
-    wuhan_n = numpfy(wuhan_n)
-    wuhan_n = wuhan_n.reshape(wuhan["N"][1])
-    usa_n = usa["N"][0].transcribe()
-    usa_n = numpfy(usa_n)
-    usa_n = usa_n.reshape(usa["N"][1])
-    mut_n = wuhan_n - usa_n
-
-    # Gene ORF10
-    wuhan_orf10 = wuhan["ORF10"][0].transcribe()
-    wuhan_orf10 = numpfy(wuhan_orf10)
-    wuhan_orf10 = wuhan_orf10.reshape(wuhan["ORF10"][1])
-    usa_orf10 = usa["ORF10"][0].transcribe()
-    usa_orf10 = numpfy(usa_orf10)
-    usa_orf10 = usa_orf10.reshape(usa["ORF10"][1])
-    mut_orf10 = wuhan_orf10 - usa_orf10
-
-    f, axs = plt.subplots(11, 3, figsize=(25, 30))
-
-    ax = axs[0, 0]
-    ax.pcolor(wuhan_orf1ab)
-    ax.set_title("Wuhan - Gene ORF1ab")
-
-    ax = axs[0, 1]
-    ax.pcolor(usa_orf1ab)
-    ax.set_title("USA - Gene ORF1ab")
-
-    ax = axs[0, 2]
-    ax.pcolor(mut_orf1ab)
-    ax.set_title("Mutation - Gene ORF1ab")
-
-    ax = axs[1, 0]
-    ax.pcolor(wuhan_s)
-    ax.set_title("Wuhan - Gene S")
-
-    ax = axs[1, 1]
-    ax.pcolor(usa_s)
-    ax.set_title("USA - Gene S")
-
-    ax = axs[1, 2]
-    ax.pcolor(mut_s)
-    ax.set_title("Mutation - Gene S")
-
-    ax = axs[2, 0]
-    ax.pcolor(wuhan_orf3a)
-    ax.set_title("Wuhan - Gene ORF3a")
-
-    ax = axs[2, 1]
-    ax.pcolor(usa_orf3a)
-    ax.set_title("USA - Gene ORF3a")
-
-    ax = axs[2, 2]
-    ax.pcolor(mut_orf3a)
-    ax.set_title("Mutation - Gene ORF3a")
-
-    ax = axs[3, 0]
-    ax.pcolor(wuhan_e)
-    ax.set_title("Wuhan - Gene E")
-
-    ax = axs[3, 1]
-    ax.pcolor(usa_e)
-    ax.set_title("USA - Gene E")
-
-    ax = axs[3, 2]
-    ax.pcolor(mut_e)
-    ax.set_title("Mutation - Gene E")
-
-    ax = axs[4, 0]
-    ax.pcolor(wuhan_m)
-    ax.set_title("Wuhan - Gene M")
-
-    ax = axs[4, 1]
-    ax.pcolor(usa_m)
-    ax.set_title("USA - Gene M")
-
-    ax = axs[4, 2]
-    ax.pcolor(mut_m)
-    ax.set_title("Mutation - Gene M")
-
-    ax = axs[5, 0]
-    ax.pcolor(wuhan_orf6)
-    ax.set_title("Wuhan - Gene ORF6")
-
-    ax = axs[5, 1]
-    ax.pcolor(usa_orf6)
-    ax.set_title("USA - Gene ORF6")
-
-    ax = axs[5, 2]
-    ax.pcolor(mut_orf6)
-    ax.set_title("Mutation - Gene ORF6")
-
-    ax = axs[6, 0]
-    ax.pcolor(wuhan_orf7a)
-    ax.set_title("Wuhan - Gene ORF7a")
-
-    ax = axs[6, 1]
-    ax.pcolor(usa_orf7a)
-    ax.set_title("USA - Gene ORF7a")
-
-    ax = axs[6, 2]
-    ax.pcolor(mut_orf7a)
-    ax.set_title("Mutation - Gene ORF7a")
-
-    ax = axs[7, 0]
-    ax.pcolor(wuhan_orf7b)
-    ax.set_title("Wuhan - Gene ORF7b")
-
-    ax = axs[7, 1]
-    ax.pcolor(usa_orf7b)
-    ax.set_title("USA - Gene ORF7b")
-
-    ax = axs[7, 2]
-    ax.pcolor(mut_orf7b)
-    ax.set_title("Mutation - Gene ORF7b")
-
-    ax = axs[8, 0]
-    ax.pcolor(wuhan_orf8)
-    ax.set_title("Wuhan - Gene ORF8")
-
-    ax = axs[8, 1]
-    ax.pcolor(usa_orf8)
-    ax.set_title("USA - Gene ORF8")
-
-    ax = axs[8, 2]
-    ax.pcolor(mut_orf8)
-    ax.set_title("Mutation - Gene ORF8")
-
-    ax = axs[9, 0]
-    ax.pcolor(wuhan_n)
-    ax.set_title("Wuhan - Gene N")
-
-    ax = axs[9, 1]
-    ax.pcolor(usa_n)
-    ax.set_title("USA - Gene N")
-
-    ax = axs[9, 2]
-    ax.pcolor(mut_n)
-    ax.set_title("Mutation - Gene N")
-
-    ax = axs[10, 0]
-    ax.pcolor(wuhan_orf10)
-    ax.set_title("Wuhan - Gene ORF10")
-
-    ax = axs[10, 1]
-    ax.pcolor(usa_orf10)
-    ax.set_title("USA - Gene ORF10")
-
-    ax = axs[10, 2]
-    ax.pcolor(mut_orf10)
-    ax.set_title("Mutation - Gene ORF10")
+        # title to subplot
+        ax[row][col].pcolor(mut)
+        ax[row][col].set_title(G+' Gene - Mutataion')
+        row+= 1
+        col=0
 
     f.tight_layout()
     f.savefig("wuhan.jpg")
