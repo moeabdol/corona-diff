@@ -28,7 +28,7 @@ def add_n(genome):
     for k in genome_keys:
         n = genome[k][2]
         for i in range(0, n):
-            genome[k][0] += 'N'
+            genome[k][0] += "N"
 
 def numpfy(gene):
     arr = ""
@@ -48,53 +48,53 @@ def numpfy(gene):
     return arr_np
 
 if __name__ == "__main__":
-    wuhan = read_covid_dna_fasta_file("data/wuhan_jan2020.fasta")
-    saudi = read_covid_dna_fasta_file("data/saudi_feb2020.fasta")
+    gene_1 = read_covid_dna_fasta_file("data/wuhan_jan2020.fasta")
+    gene_2 = read_covid_dna_fasta_file("data/saudi_feb2020.fasta")
 
-    add_n(wuhan)
-    add_n(saudi)
+    add_n(gene_1)
+    add_n(gene_2)
 
-    dna = { 'gene=ORF1ab':[(115,115),7],
-            'gene=S':[(62,62),22],
-            'gene=ORF3a':[(28,30),12],
-            'gene=E':[(15,16),12],
-            'gene=M':[(26,27),33],
-            'gene=ORF6':[(14,14),10],
-            'gene=ORF7a':[(19,20),14],
-            'gene=ORF7b':[(12,12),12],
-            'gene=ORF8':[(19,20),14],
-            'gene=N':[(36,36),36],
-            'gene=ORF10':[(11,11),4]}
+    dna = { "gene=ORF1ab": [(115,115),7],
+            "gene=S": [(62,62),22],
+            "gene=ORF3a": [(28,30),12],
+            "gene=E": [(15,16),12],
+            "gene=M": [(26,27),33],
+            "gene=ORF6": [(14,14),10],
+            "gene=ORF7a": [(19,20),14],
+            "gene=ORF7b": [(12,12),12],
+            "gene=ORF8": [(19,20),14],
+            "gene=N": [(36,36),36],
+            "gene=ORF10": [(11,11),4]}
 
     gene_name = list(dna.keys())
-    f, ax = plt.subplots(11, 3, figsize=(25, 30))
+    f, ax = plt.subplots(len(dna.keys()), 3, figsize=(25, 30))
     row = 0
     col = 0
-    mut_dict={}
+    mut_dict= {}
     for i in gene_name:
         G = i[5:]
-        wuhan_gene = wuhan[G][0].transcribe()
-        wuhan_gene = numpfy(wuhan_gene)
-        wuhan_gene = wuhan_gene.reshape(wuhan[G][1])
-        saudi_gene = saudi[G][0].transcribe()
-        saudi_gene = numpfy(saudi_gene)
-        saudi_gene = saudi_gene.reshape(saudi[G][1])
-        mut = wuhan_gene - saudi_gene
+        covid_gene_1 = gene_1[G][0].transcribe()
+        covid_gene_1 = numpfy(covid_gene_1)
+        covid_gene_1 = covid_gene_1.reshape(gene_1[G][1])
 
-        # sub-plot the numpy array with matplotlib pcolor method.
-        ax[row][col].pcolor(wuhan_gene)
-        ax[row][col].set_title(G+' Gene - Wuhan')
+        covid_gene_2 = gene_2[G][0].transcribe()
+        covid_gene_2 = numpfy(covid_gene_2)
+        covid_gene_2 = covid_gene_2.reshape(gene_2[G][1])
+
+        mut = covid_gene_1 - covid_gene_2
+
+        ax[row][col].pcolor(covid_gene_1)
+        ax[row][col].set_title(G + " Gene 1")
         col+=1
 
-        ax[row][col].pcolor(saudi_gene)
-        ax[row][col].set_title(G+' Gene - Saudi')
+        ax[row][col].pcolor(covid_gene_2)
+        ax[row][col].set_title(G + " Gene 2")
         col+=1
 
-        # title to subplot
         ax[row][col].pcolor(mut)
-        ax[row][col].set_title(G+' Gene - Mutataion')
+        ax[row][col].set_title(G + " Gene - Mutataion")
         row+= 1
         col=0
 
     f.tight_layout()
-    f.savefig("wuhan.jpg")
+    f.savefig("covid_diff.jpg")
