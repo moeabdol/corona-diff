@@ -2,6 +2,7 @@ from Bio import SeqIO
 from io import StringIO
 import numpy as np
 import matplotlib.pyplot as plt
+import argparse
 
 def read_covid_dna_fasta_file(_file):
     dna_seq_record_iterator = SeqIO.parse(_file, "fasta")
@@ -48,8 +49,13 @@ def numpfy(gene):
     return arr_np
 
 if __name__ == "__main__":
-    gene_1 = read_covid_dna_fasta_file("data/wuhan_jan2020.fasta")
-    gene_2 = read_covid_dna_fasta_file("data/saudi_feb2020.fasta")
+    parser = argparse.ArgumentParser(description="Commandline program to show COVID-19 geneome difference of two strains.")
+    parser.add_argument("file1", help="Path to first genome file (.fasta) format.")
+    parser.add_argument("file2", help="Path to second genome file (.fasta) format.")
+    args = parser.parse_args()
+
+    gene_1 = read_covid_dna_fasta_file(args.file1)
+    gene_2 = read_covid_dna_fasta_file(args.file2)
 
     add_n(gene_1)
     add_n(gene_2)
